@@ -6,7 +6,6 @@ Invitation to the Discord server: **[https://discord.gg/JKPWbpXBf4](https://disc
 
 Refresh your OCaml knowledge with these warm-up exercises:
 
-
 1. [Adder](basics/adder)
 1. [Regexp recognizer](basics/recognizer)
 1. [Context-free grammars](basics/contextfree/)
