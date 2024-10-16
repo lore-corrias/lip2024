@@ -4,16 +4,20 @@
     "dockerfile": "Dockerfile"
   },
   "remoteEnv": {
-    "PATH": "${containerEnv:PATH}:~/opam/5.2/bin"
+    "PATH": "${containerEnv:PATH}:~/opam/5.2/bin",
+    "WAYLAND_DISPLAY": "wayland-1",
+    "XDG_RUNTIME_DIR": "/tmp",
+    "HOME_USERNAME": "opam"
   },
+  "mounts": [
+    "source=/run/user/1000/wayland-1,target=/tmp/wayland-1,type=bind,z,rw"
+  ],
+  "runArgs": [
+    "--security-opt",
+    "label=disable"
+  ],
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,z,rw",
   "features": {
     "ghcr.io/devcontainers/features/nix:1": {}
-  },
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "ocamllabs.ocaml-platform"
-      ]
-    }
   }
 }

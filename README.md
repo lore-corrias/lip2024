@@ -20,6 +20,7 @@ Refresh your OCaml knowledge with these warm-up exercises:
 
 1. [A toy lexer](toylexer)
 1. [A toy parser](toyparser)
+
 1. [Game of life](life)
 
 ### Arithmetic expressions

@@ -1,12 +1,14 @@
 # Context-free grammars
 
 From your fork of the repository, go to the `contextfree` directory and create a new project with the following command:
+
 ```
 dune init project contextfree
 ```
 
-Executing the command will preserve predefined files in [bin](bin/), [lib/](lib) and [test/](test/) folders. 
+Executing the command will preserve predefined files in [bin](bin/), [lib/](lib) and [test/](test/) folders.
 Like in previous exercises, you need to open [test/dune](test/dune) and ensure that its content is exactly as follows:
+
 ```ocaml
 (library
  (name contextfreetest)
@@ -32,11 +34,13 @@ Context-free grammars can easily be formalized in OCaml with types only. We have
 Now, let's go over each type that makes up a grammar.
 
 First, we need a few constructors to represent non-terminal symbols:
+
 ```ocaml
 type symbol = A | B | S
 ```
 
 To represent terminal symbols we use the type `char`:
+
 ```ocaml
 type terminal = char
 ```
@@ -50,11 +54,13 @@ type sentential_form = symbol_or_terminal list
 ```
 
 In a context-free grammar, a production maps a single non-terminal symbol to a sentential form. We encode this relation with a product type where the first component is `symbol` and the second component is a `sentential_form`:
+
 ```ocaml
 type production = symbol * sentential_form
 ```
 
 Now we have all the ingredients to describe a context free grammar to OCaml. We model this collection with a record type, using lists in place of sets:
+
 ```ocaml
 type grammar = {
   symbols : symbol list;
@@ -88,6 +94,7 @@ A grammar can generate words of a certain language by iteratively applying its
 productions to the start symbol. The grammar is said to _derive_ the words of the language.
 
 The derivation logic is implemented in the file [lib/](lib/grammar.ml). You don't need to understand the code inside it, but it defines a function that you need to use complete the following exercises, called `derive`:
+
 ```ocaml
 derive : grammar -> int list -> sentential_form
 ```
@@ -97,6 +104,7 @@ The type tells us that `derive` takes a grammar and a list of integers and retur
 Beginning from the start symbol of the grammar, `derive` applies every production in the list on top of the result of the previous one until the list is exhausted.
 
 For example, here's how the word 1101001011 can be derived for the grammar above using `derive`:
+
 ```ocaml
 derive todo [1; 1; 0; 1; 0; 2];;
 ```
@@ -109,6 +117,7 @@ Running it in `dune utop` return the output:
 ```
 
 `derive` returns a list of symbol or terminals. This can be quite hard to read, so we have provided an auxiliary function `string_of_sentform` to convert it to a string. You can apply it to the output of derive with the `|>` operator:
+
 ```ocaml
 derive todo [1; 1; 0; 1; 0; 2] |> string_of_sentform;;
 ```
@@ -146,17 +155,21 @@ dune test
 For each test, you need to write a sequence of productions that generates the string on the right of the `=` by using their indexes.
 
 ### Exercise 1 (zero_n_one_n)
+
 Define a grammar for the language `0^n1^n` (that is, `n` repetitions of the letter 0 followed by `n` repetitions of 1, for any `n`). Derive the following words: the empty word, `01`, `0^(10)1^(10)`.
 
 ### Exercise 2 (palindromes)
+
 Define a grammar for the language over {0,1} where every word is equal to its reverse, or, equivalently, any word can be flipped and it will be the same. Derive the following words: `11011`, `0110`, `011101110`.
 
 ### Exercise 3 (balanced_parentheses)
+
 Define a grammar for the language of balanced parentheses. The available parentheses are "()", "[]", "{}". Each open parenthesis must be matched by a closed one, and different pairs must not intersect.
 
 Derive the following words: `()[]{}`, `({})[]`, `({[][{}()]})`.
 
 ### Exercise 4 (same_amount)
+
 Define a grammar for the language whose words have as many 0's as 1's. Derive the following words: empty, `1001`, `00110101`, `10001110`.
 
 > [!TIP]
@@ -165,4 +178,6 @@ Define a grammar for the language whose words have as many 0's as 1's. Derive th
 >```
 >dune build -w
 >```
+>
 >Keep it running while you work on [lib/grammar.ml](lib/grammar.ml) and have a look at its live output one in a while.
+
