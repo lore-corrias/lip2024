@@ -24,4 +24,8 @@ let string_of_frequencies fl =
   List.fold_left (fun s (t,n) -> s ^ ((string_of_token t) ^ " -> " ^ string_of_int n ^ "\n")) "" fl
 
 (* frequency : int -> 'a list -> ('a * int) list *)
-let frequency _ _ = failwith("TODO")
+let rec frequency n tokens = 
+  if n = 0 || tokens = [] then [] else 
+      let x = List.hd tokens in
+      let (eqls, not_eqls) = List.partition ((=) x) tokens in
+      (x, List.length eqls) :: frequency (n-1) not_eqls

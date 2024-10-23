@@ -7,6 +7,8 @@ let letter = ['a'-'z' 'A'-'Z']
 let chr = ['a'-'z' 'A'-'Z' '0'-'9']
 let id = letter chr*
 let num = ['0'-'9']|['1'-'9']['0'-'9']*
+let atok = ['A'-'Z']['a'-'z' '0'-'9']*
+let btok = ['a' 'e' 'i' 'o' 'u']*
 
 rule read_token =
   parse
