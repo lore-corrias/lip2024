@@ -31,7 +31,7 @@ Recall the informal definition of a grammar, which is the product of the followi
 
 Context-free grammars can easily be formalized in OCaml with types only. We have defined these types in [lib/types.ml](lib/types.ml). You must not edit this file.
 
-Now, let's go over each type that makes up a grammar.
+Now let's go over each type that makes up a grammar.
 
 First, we need a few constructors to represent non-terminal symbols:
 
@@ -45,7 +45,7 @@ To represent terminal symbols we use the type `char`:
 type terminal = char
 ```
 
-A _sentential form_ is a word made up of a mixture of terminals and non-terminals. In OCaml, this sort of type can be achieved by composing a sum type and a list type.
+A _sentential form_ is a word made up of a mixture of terminals and non-terminals. In OCaml, this sort of datatype can be achieved by composing a sum type and a list type.
 
 ```ocaml
 type symbol_or_terminal = Symbol of symbol | Terminal of terminal
@@ -59,8 +59,7 @@ In a context-free grammar, a production maps a single non-terminal symbol to a s
 type production = symbol * sentential_form
 ```
 
-Now we have all the ingredients to describe a context free grammar to OCaml. We model this collection with a record type, using lists in place of sets:
-
+We now combine these types to describe a context free grammar to OCaml. We model this collection with a record type, using lists in place of sets:
 ```ocaml
 type grammar = {
   symbols : symbol list;
@@ -93,6 +92,7 @@ This grammar is already defined in [lib/exercises.ml](lib/exercises.ml), and it 
 A grammar can generate words of a certain language by iteratively applying its
 productions to the start symbol. The grammar is said to _derive_ the words of the language.
 
+The derivation logic is implemented in the file [lib/grammar.ml](lib/grammar.ml). You don't need to understand the code inside it, but it defines a function that you'll need to use to complete the exercises, called `derive`:
 ```ocaml
 derive : grammar -> int list -> sentential_form
 ```
@@ -114,10 +114,6 @@ Running this code in `dune utop` returns a list of terminals:
  Terminal '0'; Terminal '1'; Terminal '0'; Terminal '1'; Terminal '1']
 ```
 
-<<<<<<< HEAD
-`derive` returns a list of symbol or terminals. This can be quite hard to read, so we have provided an auxiliary function `string_of_sentform` to convert it to a string. You can apply it to the output of derive with the `|>` operator:
-
-=======
 This can be quite hard to read, so we have provided an auxiliary function `string_of_sentform` to convert it to a string. You can apply it to the output of `derive` with the pipe `|>` operator:
 ```ocaml
 derive todo [1; 1; 0; 1; 0; 2] |> string_of_sentform;;
@@ -137,7 +133,7 @@ To simplify the process of testing your grammars and get a better idea of what w
 dune exec contextfree
 ```
 
-It will spit out a random list of productions and the word obtained by composing the in a leftmost fashion every half of a second. An example run is:
+It will print a random list of productions and the word obtained by applying them in a leftmost derivation every half of a second. This is what it looks like:
 
 ```
 Exit with Ctrl+C
@@ -145,6 +141,8 @@ Generating words...
 
 (S->0S0) (S->1S1) (S->0S0) (S->1S1) (S->0S0) (S->0S0) (S->0S0) (S->) 
 01010000001010
+
+...
 ```
 
 To change the grammar that is processed, edit the `input_grammar` variable with the name of a grammar from the file [lib/exercises.ml](lib/exercises.ml) that you would like to test out. Since [bin/main.ml](bin/main.ml) imports the `Exercise` modules, VS Code should show a pop-up suggestion as you type the name of the grammar.
@@ -162,10 +160,10 @@ Then, after defining each grammar, complete the tests in [lib/exercises.ml](lib/
 dune test
 ```
 
-For each test, you need to write a sequence of productions that generates the string on the right of the `=` sign.
+For each test, you need to write a sequence of productions that generates the string on the right side of the `=` sign.
 
 > [!IMPORTANT]
-> Refer to productions by their index in the list you provided for the `productions` field of the grammar.
+> You can only apply to the productions by using their index in the list you provided for the `productions` field of the grammar.
 >
 >For example, write `[0; 1; 2]` to apply the productions `S --> "0S0"`, `S --> "1S1"`, `S --> ""`, in that order.
 
@@ -192,5 +190,4 @@ Define a grammar for the language whose words have as many 0's as 1's. Derive th
 >```
 >dune build -w
 >```
->Keep it running while you work on [lib/grammar.ml](lib/grammar.ml) and have a look at its live output once in a while.
->>>>>>> remotes/upstream/main
+>Keep it running in the background while you work on [lib/grammar.ml](lib/grammar.ml) and look at its output when your code doesn't compile.
